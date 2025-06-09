@@ -10,7 +10,6 @@ const PORT = Number(getEnvVar('PORT', '3000'));
 export const setupServer = () => {
   const app = express();
 
-  // Middleware
   app.use(express.json());
   app.use(cors());
   app.use(
@@ -21,15 +20,12 @@ export const setupServer = () => {
     }),
   );
 
-  // Routes
   app.use('/contacts', contactsRouter);
 
-  // 404 Not Found Handler
   app.use((req, res) => {
     res.status(404).json({ message: 'Not found' });
   });
 
-  // Global Error Handler
   app.use((err, req, res) => {
     console.error('Unhandled error:', err);
     res.status(500).json({
@@ -38,7 +34,6 @@ export const setupServer = () => {
     });
   });
 
-  // Start server
   app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
   });
