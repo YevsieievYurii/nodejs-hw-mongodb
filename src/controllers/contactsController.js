@@ -2,11 +2,11 @@ import { getAllContacts, getContactById } from '../services/contacts.js';
 
 export const getContactsController = async (req, res) => {
   try {
-    const contacts = await getAllContacts();
+    const students = await getAllContacts();
     res.status(200).json({
       status: 200,
       message: 'Successfully found contacts!',
-      data: contacts,
+      data: students,
     });
   } catch (error) {
     res.status(500).json({ message: 'Server error', error: error.message });
