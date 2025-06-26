@@ -1,4 +1,4 @@
-const ALLOWED_SORT_FIELDS = ['name', '_id']; // можеш додати інші
+const ALLOWED_SORT_FIELDS = ['name', '_id'];
 
 export const parseSortParams = (query) => {
   const { sortBy = 'name', sortOrder = 'asc' } = query;
