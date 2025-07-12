@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { randomBytes } from 'crypto';
 import bcrypt from 'bcrypt';
 import createHttpError from 'http-errors';
@@ -137,7 +138,7 @@ export const requestResetToken = async (email) => {
       subject: 'Reset your password',
       html,
     });
-  } catch (error) {
+  } catch (err) {
     throw createHttpError(
       500,
       'Failed to send the email, please try again later.',
@@ -145,29 +146,29 @@ export const requestResetToken = async (email) => {
   }
 };
 
-export const resetPassword = async ({ token, password }) => {
-  let decoded;
+export const resetPassword = async (payload) => {
+  let entries;
+
   try {
-    decoded = jwt.verify(token, getEnvVar('JWT_SECRET'));
+    entries = jwt.verify(payload.token, getEnvVar('JWT_SECRET'));
   } catch (err) {
-    throw createHttpError(401, 'Token is expired or invalid.');
+    if (err instanceof Error) throw createHttpError(401, err.message);
+    throw err;
   }
 
   const user = await UsersCollection.findOne({
-    email: decoded.email,
-    _id: decoded.sub,
+    email: entries.email,
+    _id: entries.sub,
   });
 
   if (!user) {
     throw createHttpError(404, 'User not found');
   }
 
-  const encryptedPassword = await bcrypt.hash(password, 10);
+  const encryptedPassword = await bcrypt.hash(payload.password, 10);
 
   await UsersCollection.updateOne(
     { _id: user._id },
-    { $set: { password: encryptedPassword } },
+    { password: encryptedPassword },
   );
-
-  await SessionsCollection.deleteMany({ userId: user._id });
 };
