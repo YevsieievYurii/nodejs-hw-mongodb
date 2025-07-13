@@ -1,7 +1,7 @@
 import createHttpError from 'http-errors';
 import { parseSortParams } from '../utils/parseSortParams.js';
 import { parseFilterParams } from '../utils/parseFilterParams.js';
-
+import { parsePaginationParams } from '../utils/parsePaginationParams.js';
 import {
   getAllContacts,
   getContactById,
@@ -9,14 +9,16 @@ import {
   patchContact,
   deleteContactById,
 } from '../services/contacts.js';
-import { parsePaginationParams } from '../utils/parsePaginationParams.js';
+
+import { getEnvVar } from '../utils/getEnvVar.js';
+import { saveFileToCloudinary } from '../utils/saveFileToCloudinary.js';
 
 export const getContactsController = async (req, res, next) => {
   try {
     const { page, perPage } = parsePaginationParams(req.query);
     const { sortBy, sortOrder } = parseSortParams(req.query);
-
     const filter = parseFilterParams(req.query);
+
     const result = await getAllContacts({
       page,
       perPage,
@@ -55,9 +57,17 @@ export const getContactByIdController = async (req, res, next) => {
 
 export const createContactController = async (req, res, next) => {
   try {
+    const photo = req.file;
+    let photoUrl;
+
+    if (photo && getEnvVar('ENABLE_CLOUDINARY') === 'true') {
+      photoUrl = await saveFileToCloudinary(photo);
+    }
+
     const contact = await createContact({
       ...req.body,
       userId: req.user._id,
+      photo: photoUrl,
     });
 
     res.status(201).json({
@@ -73,7 +83,17 @@ export const createContactController = async (req, res, next) => {
 export const patchContactController = async (req, res, next) => {
   try {
     const { contactId } = req.params;
-    const updated = await patchContact(contactId, req.user._id, req.body);
+    const photo = req.file;
+    let photoUrl;
+
+    if (photo && getEnvVar('ENABLE_CLOUDINARY') === 'true') {
+      photoUrl = await saveFileToCloudinary(photo);
+    }
+
+    const updated = await patchContact(contactId, req.user._id, {
+      ...req.body,
+      ...(photoUrl ? { photo: photoUrl } : {}),
+    });
 
     if (!updated) return next(createHttpError(404, 'Contact not found'));
 
