@@ -10,8 +10,8 @@ cloudinary.v2.config({
   secure: true,
 });
 
-export const saveFileToCloudinary = async (file) => {
-  const result = await cloudinary.v2.uploader.upload(file.path);
-  await fs.unlink(file.path);
+export const saveFileToCloudinary = async (filePath) => {
+  const result = await cloudinary.v2.uploader.upload(filePath);
+  await fs.unlink(filePath);
   return result.secure_url;
 };
