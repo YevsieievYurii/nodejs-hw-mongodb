@@ -1,0 +1,30 @@
+tags:
+  - Auth
+summary: Login with Google OAuth
+operationId: loginWithGoogle
+description: Authenticate user with Google OAuth2
+requestBody:
+  required: true
+  content:
+    application/json:
+      schema:
+        type: object
+        required:
+          - code
+        properties:
+          code:
+            type: string
+            example: '4/0AfDhmr...'
+responses:
+  '200':
+    description: Google login successful
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            accessToken:
+              type: string
+              example: your-access-token
+  '401':
+    $ref: ../../components/responses/401.yaml

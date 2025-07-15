@@ -1,0 +1,41 @@
+tags:
+  - Contacts
+summary: Update contact
+operationId: updateContact
+description: Update a contact by ID
+security:
+  - bearerAuth: []
+parameters:
+  - in: path
+    name: id
+    required: true
+    schema:
+      type: string
+      example: 60d21b4667d0d8992e610c85
+requestBody:
+  required: true
+  content:
+    application/json:
+      schema:
+        type: object
+        properties:
+          name:
+            type: string
+          email:
+            type: string
+            format: email
+          phone:
+            type: string
+          favorite:
+            type: boolean
+responses:
+  '200':
+    description: Contact updated
+    content:
+      application/json:
+        schema:
+          $ref: '../../../components/schemas/contact.yaml'
+  '404':
+    $ref: '../../../components/responses/404.yaml'
+  '401':
+    $ref: '../../../components/responses/401.yaml'

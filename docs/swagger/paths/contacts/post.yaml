@@ -1,0 +1,40 @@
+tags:
+  - Contacts
+summary: Create a contact
+operationId: createContact
+description: Add a new contact
+security:
+  - bearerAuth: []
+requestBody:
+  required: true
+  content:
+    application/json:
+      schema:
+        type: object
+        required:
+          - name
+          - email
+          - phone
+        properties:
+          name:
+            type: string
+            example: Jane Doe
+          email:
+            type: string
+            format: email
+            example: jane@example.com
+          phone:
+            type: string
+            example: '+380987654321'
+          favorite:
+            type: boolean
+            example: false
+responses:
+  '201':
+    description: Contact created
+    content:
+      application/json:
+        schema:
+          $ref: '../../components/schemas/contact.yaml'
+  '401':
+    $ref: '../../components/responses/401.yaml'

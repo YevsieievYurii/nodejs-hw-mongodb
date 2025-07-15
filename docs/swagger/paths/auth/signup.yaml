@@ -1,0 +1,37 @@
+tags:
+  - Auth
+summary: Sign up user
+operationId: signupUser
+description: Register a new user
+requestBody:
+  required: true
+  content:
+    application/json:
+      schema:
+        type: object
+        required:
+          - email
+          - password
+        properties:
+          email:
+            type: string
+            format: email
+            example: user@example.com
+          password:
+            type: string
+            example: password123
+responses:
+  '201':
+    description: User registered
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            message:
+              type: string
+              example: Registration successful
+  '400':
+    description: Validation error
+  '409':
+    description: Email already exists

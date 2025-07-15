@@ -1,0 +1,35 @@
+tags:
+  - Auth
+summary: Login user
+operationId: loginUser
+description: Log in existing user
+requestBody:
+  required: true
+  content:
+    application/json:
+      schema:
+        type: object
+        required:
+          - email
+          - password
+        properties:
+          email:
+            type: string
+            format: email
+            example: user@example.com
+          password:
+            type: string
+            example: password123
+responses:
+  '200':
+    description: Login successful
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            accessToken:
+              type: string
+              example: your-access-token
+  '401':
+    $ref: ../../components/responses/401.yaml
