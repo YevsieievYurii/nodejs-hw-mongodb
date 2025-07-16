@@ -36,6 +36,7 @@
         "summary": "Sign up user",
         "operationId": "signupUser",
         "description": "Register a new user",
+        "security": [],
         "requestBody": {
           "required": true,
           "content": {
@@ -95,6 +96,7 @@
         "summary": "Login user",
         "operationId": "loginUser",
         "description": "Log in existing user",
+        "security": [],
         "requestBody": {
           "required": true,
           "content": {
@@ -151,6 +153,7 @@
         "summary": "Login with Google OAuth",
         "operationId": "loginWithGoogle",
         "description": "Authenticate user with Google OAuth2",
+        "security": [],
         "requestBody": {
           "required": true,
           "content": {
@@ -246,7 +249,8 @@
                 "required": [
                   "name",
                   "email",
-                  "phone"
+                  "phoneNumber",
+                  "contactType"
                 ],
                 "properties": {
                   "name": {
@@ -258,11 +262,15 @@
                     "format": "email",
                     "example": "jane@example.com"
                   },
-                  "phone": {
+                  "phoneNumber": {
                     "type": "string",
                     "example": "+380987654321"
                   },
-                  "favorite": {
+                  "contactType": {
+                    "type": "string",
+                    "example": "work"
+                  },
+                  "isFavorite": {
                     "type": "boolean",
                     "example": false
                   }
@@ -368,10 +376,10 @@
                     "type": "string",
                     "format": "email"
                   },
-                  "phone": {
+                  "phoneNumber": {
                     "type": "string"
                   },
-                  "favorite": {
+                  "isFavorite": {
                     "type": "boolean"
                   }
                 }
@@ -532,11 +540,11 @@
             "format": "email",
             "example": "john@example.com"
           },
-          "phone": {
+          "phoneNumber": {
             "type": "string",
             "example": "+1234567890"
           },
-          "favorite": {
+          "isFavorite": {
             "type": "boolean",
             "example": true
           }

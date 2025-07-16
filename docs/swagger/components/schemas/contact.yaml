@@ -15,9 +15,9 @@ properties:
     type: string
     format: email
     example: john@example.com
-  phone:
+  phoneNumber:
     type: string
     example: '+1234567890'
-  favorite:
+  isFavorite:
     type: boolean
     example: true

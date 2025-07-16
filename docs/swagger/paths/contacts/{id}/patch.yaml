@@ -24,9 +24,9 @@ requestBody:
           email:
             type: string
             format: email
-          phone:
+          phoneNumber:
             type: string
-          favorite:
+          isFavorite:
             type: boolean
 responses:
   '200':
