@@ -11,10 +11,10 @@
   },
   "servers": [
     {
-      "url": "http://localhost:3000"
+      "url": "https://nodejs-hw7-swagger-w6cp.onrender.com"
     },
     {
-      "url": "https://your-deploy-url.onrender.com"
+      "url": "http://localhost:3000"
     }
   ],
   "tags": [
