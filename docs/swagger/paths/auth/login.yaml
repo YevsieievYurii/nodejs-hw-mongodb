@@ -3,6 +3,7 @@ tags:
 summary: Login user
 operationId: loginUser
 description: Log in existing user
+security: []
 requestBody:
   required: true
   content:

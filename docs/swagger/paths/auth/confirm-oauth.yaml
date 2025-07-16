@@ -3,6 +3,7 @@ tags:
 summary: Login with Google OAuth
 operationId: loginWithGoogle
 description: Authenticate user with Google OAuth2
+security: []
 requestBody:
   required: true
   content:

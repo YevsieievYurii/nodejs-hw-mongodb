@@ -3,6 +3,7 @@ tags:
 summary: Sign up user
 operationId: signupUser
 description: Register a new user
+security: []
 requestBody:
   required: true
   content:
