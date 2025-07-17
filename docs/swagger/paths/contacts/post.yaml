@@ -8,7 +8,7 @@ security:
 requestBody:
   required: true
   content:
-    application/json:
+    multipart/form-data:
       schema:
         type: object
         required:
@@ -29,16 +29,29 @@ requestBody:
             example: '+380987654321'
           contactType:
             type: string
+            enum: [work, home, personal]
             example: work
-          isFavorite:
+          isFavourite:
             type: boolean
             example: false
+          photo:
+            type: string
+            format: binary
 responses:
   '201':
     description: Contact created
     content:
       application/json:
         schema:
-          $ref: '../../components/schemas/contact.yaml'
+          type: object
+          properties:
+            status:
+              type: integer
+              example: 201
+            message:
+              type: string
+              example: Successfully created a contact!
+            data:
+              $ref: '../../components/schemas/contact.yaml'
   '401':
     $ref: '../../components/responses/401.yaml'

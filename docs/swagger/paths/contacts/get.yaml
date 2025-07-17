@@ -3,16 +3,58 @@ tags:
 summary: Get all contacts
 operationId: getContacts
 description: Retrieve all user contacts
+
+parameters:
+  - in: query
+    name: page
+    schema:
+      type: integer
+      minimum: 1
+    description: Page number for pagination
+  - in: query
+    name: limit
+    schema:
+      type: integer
+      minimum: 1
+    description: Number of contacts per page
+  - in: query
+    name: favourite
+    schema:
+      type: boolean
+    description: Filter by favourite
+
 security:
   - bearerAuth: []
+
 responses:
   '200':
     description: Contacts list retrieved
     content:
       application/json:
         schema:
-          type: array
-          items:
-            $ref: '../../components/schemas/contact.yaml'
+          type: object
+          properties:
+            status:
+              type: string
+              example: success
+            message:
+              type: string
+              example: Contacts found
+            data:
+              type: object
+              properties:
+                contacts:
+                  type: array
+                  items:
+                    $ref: '../../components/schemas/contact.yaml'
+                total:
+                  type: integer
+                  example: 20
+                page:
+                  type: integer
+                  example: 1
+                limit:
+                  type: integer
+                  example: 10
   '401':
     $ref: '../../components/responses/401.yaml'
