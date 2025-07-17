@@ -204,6 +204,34 @@
         "summary": "Get all contacts",
         "operationId": "getContacts",
         "description": "Retrieve all user contacts",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "page",
+            "schema": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "description": "Page number for pagination"
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "schema": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "description": "Number of contacts per page"
+          },
+          {
+            "in": "query",
+            "name": "favourite",
+            "schema": {
+              "type": "boolean"
+            },
+            "description": "Filter by favourite"
+          }
+        ],
         "security": [
           {
             "bearerAuth": []
@@ -215,9 +243,39 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/contact"
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "success"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Contacts found"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "contacts": {
+                          "type": "array",
+                          "items": {
+                            "$ref": "#/components/schemas/contact"
+                          }
+                        },
+                        "total": {
+                          "type": "integer",
+                          "example": 20
+                        },
+                        "page": {
+                          "type": "integer",
+                          "example": 1
+                        },
+                        "limit": {
+                          "type": "integer",
+                          "example": 10
+                        }
+                      }
+                    }
                   }
                 }
               }
@@ -243,7 +301,7 @@
         "requestBody": {
           "required": true,
           "content": {
-            "application/json": {
+            "multipart/form-data": {
               "schema": {
                 "type": "object",
                 "required": [
@@ -268,11 +326,20 @@
                   },
                   "contactType": {
                     "type": "string",
+                    "enum": [
+                      "work",
+                      "home",
+                      "personal"
+                    ],
                     "example": "work"
                   },
-                  "isFavorite": {
+                  "isFavourite": {
                     "type": "boolean",
                     "example": false
+                  },
+                  "photo": {
+                    "type": "string",
+                    "format": "binary"
                   }
                 }
               }
@@ -285,7 +352,20 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/contact"
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "integer",
+                      "example": 201
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Successfully created a contact!"
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/contact"
+                    }
+                  }
                 }
               }
             }
@@ -365,22 +445,39 @@
         "requestBody": {
           "required": true,
           "content": {
-            "application/json": {
+            "multipart/form-data": {
               "schema": {
                 "type": "object",
                 "properties": {
                   "name": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "Jane Updated"
                   },
                   "email": {
                     "type": "string",
-                    "format": "email"
+                    "format": "email",
+                    "example": "jane.updated@example.com"
                   },
                   "phoneNumber": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "+380987000000"
                   },
-                  "isFavorite": {
-                    "type": "boolean"
+                  "contactType": {
+                    "type": "string",
+                    "enum": [
+                      "work",
+                      "home",
+                      "personal"
+                    ],
+                    "example": "personal"
+                  },
+                  "isFavourite": {
+                    "type": "boolean",
+                    "example": true
+                  },
+                  "photo": {
+                    "type": "string",
+                    "format": "binary"
                   }
                 }
               }
@@ -393,7 +490,20 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/contact"
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "integer",
+                      "example": 200
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Contact successfully updated"
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/contact"
+                    }
+                  }
                 }
               }
             }
@@ -430,25 +540,8 @@
           }
         ],
         "responses": {
-          "200": {
-            "description": "Contact deleted",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "status": {
-                      "type": "integer",
-                      "example": 200
-                    },
-                    "message": {
-                      "type": "string",
-                      "example": "Contact successfully deleted"
-                    }
-                  }
-                }
-              }
-            }
+          "204": {
+            "description": "Contact successfully deleted"
           },
           "401": {
             "$ref": "#/components/responses/401"
@@ -524,7 +617,8 @@
           "_id",
           "name",
           "email",
-          "phone"
+          "phoneNumber",
+          "contactType"
         ],
         "properties": {
           "_id": {
@@ -544,9 +638,32 @@
             "type": "string",
             "example": "+1234567890"
           },
-          "isFavorite": {
+          "contactType": {
+            "type": "string",
+            "example": "work"
+          },
+          "isFavourite": {
             "type": "boolean",
             "example": true
+          },
+          "photo": {
+            "type": "string",
+            "nullable": true,
+            "example": null
+          },
+          "userId": {
+            "type": "string",
+            "example": "68754f82a385ae3a7ff9fc5b"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2025-07-16T16:04:11.390Z"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2025-07-16T16:04:11.390Z"
           }
         }
       }
