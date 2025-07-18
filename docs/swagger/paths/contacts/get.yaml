@@ -10,18 +10,32 @@ parameters:
     schema:
       type: integer
       minimum: 1
+      default: 1
     description: Page number for pagination
   - in: query
-    name: limit
+    name: perPage
     schema:
       type: integer
       minimum: 1
+      default: 10
     description: Number of contacts per page
   - in: query
-    name: favourite
+    name: sortBy
+    schema:
+      type: string
+      enum: [name, email, createdAt]
+    description: The field to sort by
+  - in: query
+    name: sortOrder
+    schema:
+      type: string
+      enum: [asc, desc]
+    description: Sorting direction
+  - in: query
+    name: isFavourite
     schema:
       type: boolean
-    description: Filter by favourite
+    description: Filter contacts by isFavourite
 
 security:
   - bearerAuth: []
@@ -35,11 +49,11 @@ responses:
           type: object
           properties:
             status:
-              type: string
-              example: success
+              type: integer
+              example: 200
             message:
               type: string
-              example: Contacts found
+              example: Successfully found contacts!
             data:
               type: object
               properties:
@@ -47,14 +61,14 @@ responses:
                   type: array
                   items:
                     $ref: '../../components/schemas/contact.yaml'
-                total:
-                  type: integer
-                  example: 20
                 page:
                   type: integer
                   example: 1
-                limit:
+                perPage:
                   type: integer
                   example: 10
+                total:
+                  type: integer
+                  example: 43
   '401':
     $ref: '../../components/responses/401.yaml'
