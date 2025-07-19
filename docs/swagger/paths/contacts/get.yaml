@@ -57,7 +57,7 @@ responses:
             data:
               type: object
               properties:
-                contacts:
+                data:
                   type: array
                   items:
                     $ref: '../../components/schemas/contact.yaml'
@@ -66,9 +66,18 @@ responses:
                   example: 1
                 perPage:
                   type: integer
-                  example: 10
-                total:
+                  example: 1
+                totalItems:
                   type: integer
-                  example: 43
+                  example: 3
+                totalPages:
+                  type: integer
+                  example: 3
+                hasPreviousPage:
+                  type: boolean
+                  example: false
+                hasNextPage:
+                  type: boolean
+                  example: true
   '401':
     $ref: '../../components/responses/401.yaml'

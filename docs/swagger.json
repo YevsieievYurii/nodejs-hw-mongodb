@@ -283,7 +283,7 @@
                     "data": {
                       "type": "object",
                       "properties": {
-                        "contacts": {
+                        "data": {
                           "type": "array",
                           "items": {
                             "$ref": "#/components/schemas/contact"
@@ -295,11 +295,23 @@
                         },
                         "perPage": {
                           "type": "integer",
-                          "example": 10
+                          "example": 1
                         },
-                        "total": {
+                        "totalItems": {
                           "type": "integer",
-                          "example": 43
+                          "example": 3
+                        },
+                        "totalPages": {
+                          "type": "integer",
+                          "example": 3
+                        },
+                        "hasPreviousPage": {
+                          "type": "boolean",
+                          "example": false
+                        },
+                        "hasNextPage": {
+                          "type": "boolean",
+                          "example": true
                         }
                       }
                     }
