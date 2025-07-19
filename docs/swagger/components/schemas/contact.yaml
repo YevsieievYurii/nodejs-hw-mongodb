@@ -24,6 +24,9 @@ properties:
     type: string
     enum: [work, home, personal]
     example: work
+  userId:
+    type: string
+    example: '686a8b84bd0ae6dc6e2cc30b'
   photo:
     type:
       - string
